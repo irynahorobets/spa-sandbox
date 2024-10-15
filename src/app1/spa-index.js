@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import singleSpaReact from "single-spa-react";
 
 import RootComponent from "./App1";
-import { getStore, INIT_APP1 } from './store';
+import { StoreManager } from './store';
 
-let store = getStore();
+const storeManager = new StoreManager();
 
 export const { bootstrap, mount, unmount } = singleSpaReact({
     React,
@@ -15,22 +15,17 @@ export const { bootstrap, mount, unmount } = singleSpaReact({
         store = getStore();
         return Promise.resolve();
     },
-    loadRootComponent: async () => {
-        const randomData = await new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({
-                    title: "Title passes from mount: " + Math.random()
-                });
-            }, 1000);
-        });
-        store.dispatch({ type: INIT_APP1, payload: randomData });
-        
+    loadRootComponent: () => {
         return Promise.resolve().then(() => {
-            console.log('load App1');
+            const randomData = {
+                title: "Title passes from mount: " + Math.random()
+            }
+            console.log('load App1: ', randomData);
+            storeManager.initializeStore(randomData);
             
             function initApp() {
                 return (
-                    <Provider store={store}>
+                    <Provider store={storeManager.getStore()}>
                       <RootComponent />
                     </Provider>
                   );

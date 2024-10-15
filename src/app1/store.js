@@ -11,22 +11,34 @@ function reducer(state = defaultInitialState, action) {
     case INIT_APP1:
       return {
         ...state,
-        ...action.payload, // Update state with new data
+        ...action.payload,
       };
     default:
       return state;
   }
 }
 
-let store;
-
-export function getStore(preloadedState) {
-  if (!store) {
-    store = createStore(
-      reducer,
-      preloadedState,
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    );
+export class StoreManager {
+  constructor() {
+    this.store = null;
   }
-  return store;
+
+  initializeStore(initialData) {
+    if (!this.store) {
+      this.store = createStore(
+        reducer,
+        initialData,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      );
+    } else {
+      this.store.dispatch({
+        type: INIT_APP1,
+        payload: initialData,
+      });
+    }
+  }
+
+  getStore() {
+    return this.store;
+  }
 }
