@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import singleSpaReact from "single-spa-react";
 
 import rootComponent from "./App2";
-import store from './store';
+import { StoreManager } from './store';
 
+const storeManager = new StoreManager();
 
 export const { bootstrap, mount, unmount } = singleSpaReact({
     React,
@@ -13,9 +14,15 @@ export const { bootstrap, mount, unmount } = singleSpaReact({
     loadRootComponent: () => {
       return Promise.resolve().then(() => {
             console.log('load App2');
+            const randomData = {
+              title: "Well, App2 title is: " + Math.random()
+            }
+            storeManager.initStore(randomData);
+            let store = storeManager.getStore();
+
             function initApp() {
               return React.createElement(Provider, { store }, React.createElement(rootComponent));
-          }
+            }
           return initApp;
         });
     },

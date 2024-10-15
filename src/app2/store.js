@@ -6,7 +6,7 @@ const initialState = {
     title: 'default title 2'
 };
 
-function reducer(state, action) {
+function reducer(state = {initialState}, action) {
     switch (action.type) {
         case INIT_APP2:
             return {
@@ -18,6 +18,22 @@ function reducer(state, action) {
             return state;
     }
 }
+export class StoreManager {
+    constructor() {
+        this.store = null;
+    }
 
+    initStore(initialData) {
+        if (!this.store) {
+            this.store = createStore(
+                reducer,
+                initialData,
+                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+            );
+        }
+    }
 
-export default createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    getStore() {
+        return this.store;
+    }
+}
