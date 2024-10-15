@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import singleSpaReact from "single-spa-react";
 
-import { createReduxStore } from '../utils/store';
-
 import rootComponent from "./App2";
-import { reducer, initialState } from './store';
+import store from './store';
 
 
 export const { bootstrap, mount, unmount } = singleSpaReact({
@@ -16,7 +14,7 @@ export const { bootstrap, mount, unmount } = singleSpaReact({
       return Promise.resolve().then(() => {
             console.log('load App2');
             function initApp() {
-              return React.createElement(Provider, {store: createReduxStore(reducer, initialState)}, React.createElement(rootComponent));
+              return React.createElement(Provider, { store }, React.createElement(rootComponent));
           }
           return initApp;
         });

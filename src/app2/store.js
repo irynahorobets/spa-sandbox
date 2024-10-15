@@ -2,11 +2,11 @@ import { createStore } from 'redux';
 
 const INIT_APP2 = 'INIT_APP2';
 
-export const initialState = {
+const initialState = {
     title: 'default title 2'
 };
 
-export function reducer(state = {...initialState}, action) {
+function reducer(state, action) {
     switch (action.type) {
         case INIT_APP2:
             return {
@@ -18,3 +18,6 @@ export function reducer(state = {...initialState}, action) {
             return state;
     }
 }
+
+
+export default createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

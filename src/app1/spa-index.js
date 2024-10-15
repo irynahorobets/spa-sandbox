@@ -3,20 +3,37 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import singleSpaReact from "single-spa-react";
 
-import { createReduxStore } from '../utils/store';
+import RootComponent from "./App1";
+import { getStore, INIT_APP1 } from './store';
 
-import rootComponent from "./App1";
-import { reducer, initialState } from './store';
-
+let store = getStore();
 
 export const { bootstrap, mount, unmount } = singleSpaReact({
     React,
     ReactDOM,
-    loadRootComponent: () => {
+    bootstrap: () => {
+        store = getStore();
+        return Promise.resolve();
+    },
+    loadRootComponent: async () => {
+        const randomData = await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({
+                    title: "Title passes from mount: " + Math.random()
+                });
+            }, 1000);
+        });
+        store.dispatch({ type: INIT_APP1, payload: randomData });
+        
         return Promise.resolve().then(() => {
             console.log('load App1');
+            
             function initApp() {
-                return React.createElement(Provider, {store: createReduxStore(reducer, initialState)}, React.createElement(rootComponent));
+                return (
+                    <Provider store={store}>
+                      <RootComponent />
+                    </Provider>
+                  );
             }
             return initApp;
         });
