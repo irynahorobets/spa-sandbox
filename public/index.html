@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple stores example</title>
+</head>
+<body>
+    <nav>
+        <a href="/app1" data-link>App 1</a>
+        <a href="/app2" data-link>App 2</a>
+    </nav>
+    
+    <div class="js-react-container"></div>
+
+    <meta name="importmap-type" content="systemjs-importmap" />
+    <script type="systemjs-importmap">
+        {
+            "imports": {
+                "react": "https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js",
+                "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js",
+                "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.3/lib/system/single-spa.min.js",
+                "spa_config": "/spa-config.js",
+                "app1": "/app1.js",
+                "app2": "/app2.js"
+            }
+        }
+    </script>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js" as="script" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@2.2.0/dist/import-map-overrides.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.js"></script>
+    <script src="https://unpkg.com/systemjs/dist/extras/named-register.js"></script>
+    <script>
+        System.import('spa_config');
+    </script>
+
+    
+</body>
+</html>
